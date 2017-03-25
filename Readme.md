@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Ангелина](https://up.htmlacademy.ru/javascript/9/user/306365).
-* Наставник: `Неизвестно`.
+* Наставник: ` Роман Чаругин`.
 
 ---
 
