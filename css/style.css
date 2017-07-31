@@ -656,10 +656,4 @@ select option:hover {
     border-radius: 50%;
 }
 
-.pin-marker {
-    width: 5px;
-    height: 5px;
-    background: pink;
-    position: absolute;
-    border-radius: 50%;
-}
+

@@ -128,9 +128,11 @@ function renderPin(hotel) {
   var pin = pinTemplate.cloneNode(true);
   var pinWidth = 56;
   var pinHeight = 70;
+  var pinElement = pin.querySelector('.pin');
   pin.querySelector('img').src = hotel.avatar;
-  pin.querySelector('.pin').style.left = hotel.location.x - (pinWidth / 2) + 'px';
-  pin.querySelector('.pin').style.top = hotel.location.y - pinHeight + 'px';
+  pinElement.style.left = hotel.location.x - (pinWidth / 2) + 'px';
+  pinElement.style.top = hotel.location.y - pinHeight + 'px';
+  pinElement.setAttribute('tabindex', 0);
   return pin;
 }
 
@@ -174,19 +176,38 @@ pins[0].setAttribute('tabindex', 0);
 
 pins.forEach(function(pin, index) {
   pin.addEventListener('click', function() {
-    deactivatePins(pins);
-    this.classList.add('pin--active');
-    dialogOffer.style.display = 'block';
-    dialogOffer.replaceChild(renderLodge(hotels[index - 1]), dialogOffer.querySelector('.dialog__panel'));
-  })
+    activatePin(this, index);
+  });
+  pin.addEventListener('keydown', function(evt) {
+    if (evt.keyCode === 13) {
+      activatePin(this, index);
+    }
+  });
 });
 
 dialogClose.addEventListener('click', function() {
-  dialogOffer.style.display = 'none';
   deactivatePins(pins);
+});
+dialogClose.addEventListener('keydown', function(evt) {
+  if (evt.keyCode === 13) {
+    deactivatePins(pins);
+  }
+});
+document.addEventListener('keydown', function(evt) {
+  if (evt.keyCode === 27) {
+    deactivatePins(pins);
+  }
 })
 
+function activatePin(pin, index) {
+  deactivatePins(pins);
+  pin.classList.add('pin--active');
+  dialogOffer.style.display = 'block';
+  dialogOffer.replaceChild(renderLodge(hotels[index - 1]), dialogOffer.querySelector('.dialog__panel'));
+}
+
 function deactivatePins(pins) {
+  dialogOffer.style.display = 'none';
   pins.forEach(function(pin) {
     pin.classList.remove('pin--active');
   });
