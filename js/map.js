@@ -170,7 +170,7 @@ function renderLodge(lodge) {
 
 var pins = document.querySelectorAll('.pin');
 var dialogClose = dialogOffer.querySelector('.dialog__close');
-console.log(hotels)
+pins[0].setAttribute('tabindex', 0);
 
 pins.forEach(function(pin, index) {
   pin.addEventListener('click', function() {
