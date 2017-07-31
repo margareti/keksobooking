@@ -42,8 +42,10 @@ var typeRussian = {
 }
 var hotels = generateHotels(hotelConstraints);
 var dialogOffer = document.querySelector('.dialog');
-dialogOffer.replaceChild(renderLodge(hotels[0]), dialogOffer.querySelector('.dialog__panel'))
 
+
+
+dialogOffer.replaceChild(renderLodge(hotels[0]), dialogOffer.querySelector('.dialog__panel'));
 pinContainer.appendChild(renderPins(hotels));
 
 function generateHotels(hotelConstraints) {
@@ -164,6 +166,30 @@ function renderLodge(lodge) {
     }
     return fragment;
   }
+}
+
+var pins = document.querySelectorAll('.pin');
+var dialogClose = dialogOffer.querySelector('.dialog__close');
+console.log(hotels)
+
+pins.forEach(function(pin, index) {
+  pin.addEventListener('click', function() {
+    deactivatePins(pins);
+    this.classList.add('pin--active');
+    dialogOffer.style.display = 'block';
+    dialogOffer.replaceChild(renderLodge(hotels[index - 1]), dialogOffer.querySelector('.dialog__panel'));
+  })
+});
+
+dialogClose.addEventListener('click', function() {
+  dialogOffer.style.display = 'none';
+  deactivatePins(pins);
+})
+
+function deactivatePins(pins) {
+  pins.forEach(function(pin) {
+    pin.classList.remove('pin--active');
+  });
 }
 
 
