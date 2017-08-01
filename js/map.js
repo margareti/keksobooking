@@ -213,4 +213,55 @@ function deactivatePins(pins) {
   });
 }
 
+function validateForm() {
+  var form = document.querySelector('.notice__form');
+  var title = form.querySelector('#title');
+  var price = form.querySelector('#price');
+  var timeIn = form.querySelector('#time');
+  var timeOut = form.querySelector('#timeout');
+  var type = form.querySelector('#type');
+  var roomCount = form.querySelector('#room_number');
+  var guestCount = form.querySelector('#capacity');
+  var priceTypes = {
+    'Квартира': 1000,
+    'Лачуга': 0,
+    'Дворец': 10000
+  }
 
+  title.setAttribute('minlength', 30);
+  title.setAttribute('maxlength', 100);
+  title.required = true;
+
+  price.required = true;
+  price.min = 1000;
+  price.max = 1000000;
+
+  function syncTime(element) {
+    if (element.target === timeIn) {
+      timeOut.value = element.target.value;
+    } else {
+      timeIn.value = element.target.value;
+    }
+  }
+
+  function syncPrice(element) {
+    price.min = priceTypes[element.target.value];
+    price.placeholder = priceTypes[element.target.value];
+  }
+
+  function syncGuestCount(element) {
+    if (element.target === roomCount) {
+      guestCount.value = roomCount.value == 1 ? 'none' : 'some';
+    } else {
+      roomCount.value = guestCount.value == 'none' ? 1 : roomCount.value;
+    }
+  }
+
+  timeIn.addEventListener('change', syncTime);
+  timeOut.addEventListener('change', syncTime);
+  type.addEventListener('change', syncPrice);
+  roomCount.addEventListener('change', syncGuestCount);
+  guestCount.addEventListener('change', syncGuestCount);
+}
+
+validateForm();
