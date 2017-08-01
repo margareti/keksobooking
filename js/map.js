@@ -42,8 +42,7 @@ var typeRussian = {
 }
 var hotels = generateHotels(hotelConstraints);
 var dialogOffer = document.querySelector('.dialog');
-
-
+var form = document.querySelector('.notice__form');
 
 dialogOffer.replaceChild(renderLodge(hotels[0]), dialogOffer.querySelector('.dialog__panel'));
 pinContainer.appendChild(renderPins(hotels));
@@ -213,8 +212,22 @@ function deactivatePins(pins) {
   });
 }
 
-function validateForm() {
-  var form = document.querySelector('.notice__form');
+function validateForm(form) {
+ return true;
+}
+
+function resetForm(form) {
+  var inputs = form.querySelectorAll('input, textarea');
+  var selects = form.querySelectorAll('select');
+  inputs.forEach(function(input) {
+    input.value = null;
+  });
+  selects.forEach(function(select) {
+    select.value = select.querySelector('option').value;
+  })
+}
+
+function enforceFormConstraints(form) {
   var title = form.querySelector('#title');
   var price = form.querySelector('#price');
   var timeIn = form.querySelector('#time');
@@ -223,9 +236,9 @@ function validateForm() {
   var roomCount = form.querySelector('#room_number');
   var guestCount = form.querySelector('#capacity');
   var priceTypes = {
-    'Квартира': 1000,
-    'Лачуга': 0,
-    'Дворец': 10000
+    'квартира': 1000,
+    'лачуга': 0,
+    'дворец': 10000
   }
 
   title.setAttribute('minlength', 30);
@@ -245,6 +258,7 @@ function validateForm() {
   }
 
   function syncPrice(element) {
+    console.log(element)
     price.min = priceTypes[element.target.value];
     price.placeholder = priceTypes[element.target.value];
   }
@@ -263,5 +277,11 @@ function validateForm() {
   roomCount.addEventListener('change', syncGuestCount);
   guestCount.addEventListener('change', syncGuestCount);
 }
+form.addEventListener('submit', function(evt) {
+  evt.preventDefault();
+  if (validateForm(form)) {
+    resetForm(form);
+  };
 
-validateForm();
+});
+enforceFormConstraints(form);
